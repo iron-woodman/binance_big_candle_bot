@@ -1,0 +1,15 @@
+[Unit]
+Description=Telegram bot 'Big Candle Bot'
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/usr/local/bin/bot/binance_big_candle_bot
+ExecStart=/usr/bin/python3 /usr/local/bin/bot/binance_big_candle_bot/main2.py
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
