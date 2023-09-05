@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 date_str = datetime.now().strftime("%Y%m%d")
-log_file = f'logs/{date_str}_hummer_signals.log'
+log_file = f'logs/{date_str}_big_candle.log'
 
 
 def configure_logging(log_level=logging.INFO):

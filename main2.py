@@ -1,11 +1,13 @@
 from time import sleep
 from binance import  ThreadedWebsocketManager
+import threading
+
 
 from config_handler import TIMEFRAMES,CANDLE_BODY_SIZE
 import logger as custom_logging
 from binance_api import futures_list
 from websocket_handler import check_bar_for_signal
-from telegram_api import send_signal
+from telegram_api import send_signal, send_signals_pack, add_signal_to_list
 
 
 class QueueManager():
@@ -52,7 +54,8 @@ class QueueManager():
                     signal = check_bar_for_signal(symbol, open_, high, low, close, volume, timeframe)
                     if signal != '':
                         # print(signal)
-                        send_signal(signal)
+                        # send_signal(signal)
+                        add_signal_to_list(signal)
 
 
         except Exception as e:
@@ -81,6 +84,9 @@ def main():
     custom_logging.info(f"Coin list loaded ({len(futures_list)})")
     print(f"Coin list count {len(futures_list)}.")
     send_signal(f'Bot started. Coins count: {len(futures_list)}. TF:{TIMEFRAMES}. Bar size limit: {CANDLE_BODY_SIZE}%.')
+
+    tlg_message_sender = threading.Thread(target=send_signals_pack)
+    tlg_message_sender.start()
 
     manager = QueueManager(symbols=futures_list, timeframes=TIMEFRAMES)
     manager.join()

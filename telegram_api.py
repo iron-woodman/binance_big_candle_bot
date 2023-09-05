@@ -1,8 +1,13 @@
 ## -*- coding: utf-8 -*-
 import requests
+from datetime import datetime
 from config_handler import TLG_TOKEN, TLG_CHANNEL_ID
-import datetime
+import time
+
 import logger as custom_logging
+
+signals_list = []
+last_signal_time = 1.0
 
 
 def send_signal(signal):
@@ -25,3 +30,32 @@ def send_signal(signal):
             custom_logging.error(f'Telegram send signal error:\n ({signal}). \nAttempts count={attemts_count}')
             datetime.time.sleep(1)
             attemts_count -= 1
+
+
+
+def list_to_string(lst):
+    mess = ''
+    for item in lst:
+        mess += item + '\n\n'
+    return mess
+
+
+def send_signals_pack():
+    global last_signal_time
+    global signals_list
+    while True:
+        if time.time() - last_signal_time > 5:
+            if len(signals_list) > 0:
+                long_mess = list_to_string(signals_list)
+                signals_list.clear()
+                send_signal(long_mess)
+                last_signal_time = time.time()
+        time.sleep(1)
+
+
+def add_signal_to_list(signal):
+    global signals_list
+    global last_signal_time
+
+    signals_list.append(signal)
+    last_signal_time = time.time()

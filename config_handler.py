@@ -4,7 +4,7 @@ import os
 import logger as custom_logging
 
 
-DEBUG = True
+DEBUG = False
 common_params = dict()
 
 

@@ -3,6 +3,6 @@
   "Secret_Key": "BKumF36wB6xjJau65zPTCRGIVU2Ak5VDr9XMQxCxaS73FYx0cn09WsbgDRIt43RT",
   "telegram_token": "5085987089:AAFOaNFSWusfA9hDI-b0UYIirrWRK3VvhAg",
   "telegram_channel_id": -1001971369819,
-  "timeframes": ["15m"],
-  "candle_size": 2.0
+  "timeframes": ["5m"],
+  "candle_size": 0.5
 }
