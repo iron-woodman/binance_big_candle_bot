@@ -1,9 +1,9 @@
 from time import sleep
-from binance import  ThreadedWebsocketManager
+from binance import  ThreadedWebsocketManager, enums
 import threading
 
 
-from config_handler import TIMEFRAMES,CANDLE_BODY_SIZE
+from config_handler import TIMEFRAMES, CANDLE_BODY_SIZE
 import logger as custom_logging
 from binance_api import futures_list
 from websocket_handler import check_bar_for_signal
@@ -21,7 +21,8 @@ class QueueManager():
         self._twm.start()
         custom_logging.warning(f"Start listening to {len(self._streams)} streams")
         self._listener: str = self._twm.start_futures_multiplex_socket(callback=self._handle_socket_message,
-                                                                       streams=self._streams)
+                                                                       streams=self._streams,
+                                                                       futures_type=enums.FuturesType.USD_M)
 
 
     def _handle_socket_message(self, message):
@@ -90,8 +91,6 @@ def main():
 
     manager = QueueManager(symbols=futures_list, timeframes=TIMEFRAMES)
     manager.join()
-
-
 
 if __name__ == "__main__":
     main()

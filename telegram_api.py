@@ -36,7 +36,7 @@ def send_signal(signal):
 def list_to_string(lst):
     mess = ''
     for item in lst:
-        mess += item + '\n\n'
+        mess += '\n'+item + '\n'
     return mess
 
 
