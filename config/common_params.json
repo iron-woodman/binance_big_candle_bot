@@ -4,5 +4,6 @@
   "telegram_token": "5085987089:AAFOaNFSWusfA9hDI-b0UYIirrWRK3VvhAg",
   "telegram_channel_id": -1001971369819,
   "timeframes": ["4h"],
+  "avg_volumes_file": "avg_volumes.json",
   "candle_size": 5.0
 }
