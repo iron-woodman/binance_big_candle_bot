@@ -1,27 +1,12 @@
 ## -*- coding: utf-8 -*-
+import os
 import json
 from telegram_message import TLGMessage
 import logger as custom_logging
 from config_handler import AVG_VOLUMES_FILE, CANDLE_BODY_SIZE
 
-
-AVG_VOLUMES = dict()
-
-
-def load_avg_volumes(file):
-    global AVG_VOLUMES
-    AVG_VOLUMES = dict()
-    try:
-        with open(file, 'r', encoding='cp1251') as f:
-            AVG_VOLUMES = json.load(f)
-        print('avg volumes loaded')
-    except Exception as e:
-        print("Load_avg_volume_params exception:", e)
-        custom_logging.error(f"Load_avg_volumes exception: {e}")
-
-
 def get_volume_ratio(volume, timeframe, symbol):
-    global AVG_VOLUMES
+    from avg_volumes_updater import AVG_VOLUMES
     avg_volume = 0.0
     ratio = 0.0
     if symbol in AVG_VOLUMES:
@@ -33,7 +18,6 @@ def get_volume_ratio(volume, timeframe, symbol):
             return ratio
     else:
         custom_logging.warning(f"Avg volume not exists for {symbol}:{timeframe}.")
-
 
 
 def get_candle_proportion(open_, high, low, close):
@@ -91,9 +75,11 @@ def check_bar_for_signal(symbol, open_, high, low, close, volume, timeframe):
         f"{symbol}:{timeframe}:{bar_color}:PRICE_MOVE{price_move_size_procent}%:Vol. {volume_ratio}")
     tlg_message = TLGMessage(symbol, timeframe, bar_color, price_move_size_procent, volume_ratio)
     signal = tlg_message.generate_message()
+    custom_logging.info(
+        f'{symbol}:{bar_color}:{price_move_size_procent}:' +
+        f'(open={open_}, high={high}, low={low}, close={close}, timeframe="{timeframe}")')
 
     return signal
     # return f"{symbol}:{timeframe}:{price_move_size_percent}%"
 
 
-load_avg_volumes(AVG_VOLUMES_FILE)

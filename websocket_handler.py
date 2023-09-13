@@ -1,9 +1,6 @@
 ## -*- coding: utf-8 -*-
-import json
 from time import sleep
-from binance_api import futures_list
 from binance import ThreadedWebsocketManager, enums
-from config_handler import TIMEFRAMES, CANDLE_BODY_SIZE
 import logger as custom_logging
 from telegram_api import add_signal_to_list
 from signal_logic import check_bar_for_signal
